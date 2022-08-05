@@ -1,6 +1,7 @@
 // import PropTypes from 'prop-types'
 import React, { Component } from 'react';
 import { getCategories } from './services/api';
+import { Link } from 'react-router-dom';
 
 export default class Home extends Component {
   state = {
