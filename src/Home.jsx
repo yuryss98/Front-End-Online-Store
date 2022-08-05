@@ -18,6 +18,8 @@ export default class Home extends Component {
     });
   }
 
+  // arrumando req 4
+
   render() {
     const { listCategory } = this.state;
     return (
