@@ -1,7 +1,7 @@
 // import PropTypes from 'prop-types'
 import React, { Component } from 'react';
-import { getCategories } from './services/api';
 import { Link } from 'react-router-dom';
+import { getCategories } from './services/api';
 
 export default class Home extends Component {
   state = {
@@ -28,6 +28,7 @@ export default class Home extends Component {
         >
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
+        <Link data-testid="shopping-cart-button" to="/carrinho">Carrinho</Link>
         {
           listCategory && (
             <div>
