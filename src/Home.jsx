@@ -100,6 +100,13 @@ export default class Home extends Component {
               <p>{ product.title }</p>
               <img src={ product.thumbnail } alt={ product.title } />
               <p>{ product.price }</p>
+              <Link
+                to={ `/details/${product.id}` }
+                data-testid="product-detail-link"
+              >
+                Ver Detalhes
+
+              </Link>
             </div>
           )) : <p>{ test }</p>
         }
@@ -108,9 +115,16 @@ export default class Home extends Component {
           itemsCategory.length > 0 && (
             itemsCategory.map((item) => (
               <div key={ item.id } data-testid="product">
-                <p>{ item.price }</p>
                 <p>{ item.title }</p>
                 <img src={ item.thumbnail } alt={ item.title } />
+                <p>{ item.price }</p>
+                <Link
+                  to={ `/details/${item.id}` }
+                  data-testid="product-detail-link"
+                >
+                  Ver Detalhes
+
+                </Link>
               </div>
             ))
           )
