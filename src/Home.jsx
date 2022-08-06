@@ -9,6 +9,7 @@ export default class Home extends Component {
     search: '',
     listProducts: '',
     test: '',
+    itemsCategory: [],
   }
 
   async componentDidMount() {
@@ -39,8 +40,18 @@ export default class Home extends Component {
     }
   }
 
+  getProductsByCategory = async ({ target }) => {
+    const { value } = target;
+    const { listCategory } = this.state;
+    const filterProducts = listCategory.filter((product) => product.name === value);
+    const response = await getProductsFromCategoryAndQuery(filterProducts[0].id, '');
+    this.setState({
+      itemsCategory: response.results,
+    });
+  }
+
   render() {
-    const { listCategory, listProducts, test } = this.state;
+    const { listCategory, listProducts, test, itemsCategory } = this.state;
     return (
       <div>
         <input
@@ -67,15 +78,18 @@ export default class Home extends Component {
           listCategory && (
             <div>
               {listCategory.map(
-                (category) => (
-                  <div
-                    key={ category.id }
-                  >
-                    <p data-testid="category">
-                      {category.name}
-                    </p>
-                    <button type="button">Acessar</button>
-                  </div>),
+                ({ id, name }) => (
+                  <label htmlFor={ id } key={ id } data-testid="category">
+                    <input
+                      name="category"
+                      id={ id }
+                      value={ name }
+                      type="radio"
+                      onChange={ this.getProductsByCategory }
+                    />
+                    { name }
+                  </label>
+                ),
               )}
             </div>)
         }
@@ -88,6 +102,18 @@ export default class Home extends Component {
               <p>{ product.price }</p>
             </div>
           )) : <p>{ test }</p>
+        }
+
+        {
+          itemsCategory.length > 0 && (
+            itemsCategory.map((item) => (
+              <div key={ item.id } data-testid="product">
+                <p>{ item.price }</p>
+                <p>{ item.title }</p>
+                <img src={ item.thumbnail } alt={ item.title } />
+              </div>
+            ))
+          )
         }
 
       </div>
