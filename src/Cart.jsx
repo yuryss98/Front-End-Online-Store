@@ -2,25 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 export default class Cart extends Component {
-  state = {
-    test: this.props.addItens,
-  }
-
-  increaseQuantity = (el) => {
-    const { test } = this.state;
-    const buscar = test.findIndex((obj) => obj.title === el.title);
-    this.setState((prevState) => ({
-      test: [...prevState.test],
-      // [test[buscar].quantity]: 50,
-    }));
-  }
-
   render() {
-    const { test } = this.state;
+    const { addItens, increaseQuantity, decreaseQuantity, removeItem } = this.props;
     return (
       <div>
         {
-          (test.length === 0) ? (
+          (addItens.length === 0) ? (
             <div>
               <input type="text" name="" id="" />
               <p
@@ -29,7 +16,7 @@ export default class Cart extends Component {
                 Seu carrinho está vazio
               </p>
             </div>
-          ) : test.map((el) => (
+          ) : addItens.map((el) => (
             <div key={ el.title }>
               <p data-testid="shopping-cart-product-name">{ el.title }</p>
               <p>{ el.price }</p>
@@ -37,7 +24,7 @@ export default class Cart extends Component {
               <button
                 type="button"
                 data-testid="product-increase-quantity"
-                onClick={ () => this.increaseQuantity(el) }
+                onClick={ () => increaseQuantity(el) }
               >
                 +
 
@@ -45,8 +32,17 @@ export default class Cart extends Component {
               <button
                 type="button"
                 data-testid="product-decrease-quantity"
+                onClick={ () => decreaseQuantity(el) }
               >
                 -
+
+              </button>
+              <button
+                type="button"
+                data-testid="remove-product"
+                onClick={ () => removeItem(el) }
+              >
+                Remover Item
 
               </button>
             </div>
@@ -59,4 +55,7 @@ export default class Cart extends Component {
 
 Cart.propTypes = {
   addItens: PropTypes.arrayOf.isRequired,
+  increaseQuantity: PropTypes.func.isRequired,
+  decreaseQuantity: PropTypes.func.isRequired,
+  removeItem: PropTypes.func.isRequired,
 };

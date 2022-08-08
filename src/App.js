@@ -17,14 +17,44 @@ class App extends Component {
       title,
       quantity: 1,
     };
-    const temOuNao = addItens.find((el) => el.title === title);
-    if (!temOuNao) {
+    const temOuNao = addItens.findIndex((el) => el.title === title);
+    if (temOuNao < 0) {
       this.setState((prevState) => ({
         addItens: [...prevState.addItens, obj],
       }));
     } else {
-      temOuNao.quantity += 1;
+      addItens[temOuNao].quantity += 1;
+      this.setState({
+        addItens,
+      });
     }
+  }
+
+  increaseQuantity = (el) => {
+    const { addItens } = this.state;
+    const buscar = addItens.findIndex((obj) => obj.title === el.title);
+    addItens[buscar].quantity += 1;
+    this.setState({
+      addItens,
+    });
+  }
+
+  decreaseQuantity = (el) => {
+    const { addItens } = this.state;
+    const buscar = addItens.findIndex((obj) => obj.title === el.title);
+    if (addItens[buscar].quantity > 1) {
+      addItens[buscar].quantity -= 1;
+      this.setState({
+        addItens,
+      });
+    }
+  }
+
+  removeItem = (el) => {
+    const { addItens } = this.state;
+    this.setState({
+      addItens: addItens.filter((item) => item.title !== el.title),
+    });
   }
 
   render() {
@@ -56,6 +86,9 @@ class App extends Component {
                 { ...props }
                 addItens={ addItens }
                 addItensToCart={ this.addItensToCart }
+                increaseQuantity={ this.increaseQuantity }
+                decreaseQuantity={ this.decreaseQuantity }
+                removeItem={ this.removeItem }
               />) }
             />
           </Switch>
