@@ -22,7 +22,7 @@ export default class Details extends Component {
     return (
       <div>
         <Link
-          to="/carrinho"
+          to="/cart"
           data-testid="shopping-cart-button"
         >
           Ir para o carrinho de compras
