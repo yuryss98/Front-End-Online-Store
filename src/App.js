@@ -55,6 +55,7 @@ class App extends Component {
               render={ (props) => (<Cart
                 { ...props }
                 addItens={ addItens }
+                addItensToCart={ this.addItensToCart }
               />) }
             />
           </Switch>
