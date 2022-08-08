@@ -12,19 +12,19 @@ class App extends Component {
   addItensToCart = (item) => {
     const { price, title } = item;
     const { addItens } = this.state;
-    const index = addItens.findIndex((el) => el.title === title);
-    console.log(index);
-    if (index < 0) {
+    const obj = {
+      price,
+      title,
+      quantity: 1,
+    };
+    const temOuNao = addItens.find((el) => el.title === title);
+    if (!temOuNao) {
       this.setState((prevState) => ({
-        addItens: [...prevState.addItens, { title, price, quantity: 1 }],
+        addItens: [...prevState.addItens, obj],
       }));
+    } else {
+      temOuNao.quantity += 1;
     }
-    // else {
-    //   this.setState((prevState) => {
-    //     prevState.addItens[index].quantity += 1;
-    //     return { addItens: [...prevState] };
-    //   });
-    // }
   }
 
   render() {
@@ -33,7 +33,14 @@ class App extends Component {
       <div className="App">
         <BrowserRouter>
           <Switch>
-            <Route exact path="/details/:id" component={ Details } />
+            <Route
+              exact
+              path="/details/:id"
+              render={ (props) => (<Details
+                { ...props }
+                addItensToCart={ this.addItensToCart }
+              />) }
+            />
             <Route
               exact
               path="/"

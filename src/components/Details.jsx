@@ -19,6 +19,7 @@ export default class Details extends Component {
   render() {
     const { product } = this.state;
     const { title, thumbnail, price } = product;
+    const { addItensToCart } = this.props;
     return (
       <div>
         <Link
@@ -35,6 +36,14 @@ export default class Details extends Component {
               <p data-testid="product-detail-name">{ title }</p>
               <img data-testid="product-detail-image" src={ thumbnail } alt={ title } />
               <p data-testid="product-detail-price">{ price }</p>
+              <button
+                data-testid="product-detail-add-to-cart"
+                onClick={ () => addItensToCart(product) }
+                type="button"
+              >
+                Adicionar ao Carrinho
+
+              </button>
             </div>
           )
         }
@@ -50,4 +59,5 @@ Details.propTypes = {
       id: PropTypes.string,
     }),
   }).isRequired,
+  addItensToCart: PropTypes.func.isRequired,
 };
