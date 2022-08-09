@@ -6,7 +6,12 @@ import Details from './components/Details';
 
 class App extends Component {
   state = {
-    addItens: [],
+    addItens: JSON.parse(localStorage.getItem('Cart')) || [],
+  }
+
+  componentDidUpdate() {
+    const { addItens } = this.state;
+    localStorage.setItem('Cart', JSON.stringify(addItens));
   }
 
   addItensToCart = (item) => {
@@ -17,14 +22,44 @@ class App extends Component {
       title,
       quantity: 1,
     };
-    const temOuNao = addItens.find((el) => el.title === title);
-    if (!temOuNao) {
+    const index = addItens.findIndex((el) => el.title === title);
+    if (index < 0) {
       this.setState((prevState) => ({
         addItens: [...prevState.addItens, obj],
       }));
     } else {
-      temOuNao.quantity += 1;
+      addItens[index].quantity += 1;
+      this.setState({
+        addItens,
+      });
     }
+  }
+
+  increaseQuantity = (el) => {
+    const { addItens } = this.state;
+    const buscar = addItens.findIndex((obj) => obj.title === el.title);
+    addItens[buscar].quantity += 1;
+    this.setState({
+      addItens,
+    });
+  }
+
+  decreaseQuantity = (el) => {
+    const { addItens } = this.state;
+    const buscar = addItens.findIndex((obj) => obj.title === el.title);
+    if (addItens[buscar].quantity > 1) {
+      addItens[buscar].quantity -= 1;
+      this.setState({
+        addItens,
+      });
+    }
+  }
+
+  removeItem = (el) => {
+    const { addItens } = this.state;
+    this.setState({
+      addItens: addItens.filter((item) => item.title !== el.title),
+    });
   }
 
   render() {
@@ -54,7 +89,11 @@ class App extends Component {
               path="/cart/"
               render={ (props) => (<Cart
                 { ...props }
-                addItens={ addItens }
+                itensCart={ addItens }
+                addItensToCart={ this.addItensToCart }
+                increaseQuantity={ this.increaseQuantity }
+                decreaseQuantity={ this.decreaseQuantity }
+                removeItem={ this.removeItem }
               />) }
             />
           </Switch>
