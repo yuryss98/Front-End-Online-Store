@@ -6,7 +6,12 @@ import Details from './components/Details';
 
 class App extends Component {
   state = {
-    addItens: [],
+    addItens: JSON.parse(localStorage.getItem('Cart')) || [],
+  }
+
+  componentDidUpdate() {
+    const { addItens } = this.state;
+    localStorage.setItem('Cart', JSON.stringify(addItens));
   }
 
   addItensToCart = (item) => {
@@ -17,13 +22,13 @@ class App extends Component {
       title,
       quantity: 1,
     };
-    const temOuNao = addItens.findIndex((el) => el.title === title);
-    if (temOuNao < 0) {
+    const index = addItens.findIndex((el) => el.title === title);
+    if (index < 0) {
       this.setState((prevState) => ({
         addItens: [...prevState.addItens, obj],
       }));
     } else {
-      addItens[temOuNao].quantity += 1;
+      addItens[index].quantity += 1;
       this.setState({
         addItens,
       });
@@ -84,7 +89,7 @@ class App extends Component {
               path="/cart/"
               render={ (props) => (<Cart
                 { ...props }
-                addItens={ addItens }
+                itensCart={ addItens }
                 addItensToCart={ this.addItensToCart }
                 increaseQuantity={ this.increaseQuantity }
                 decreaseQuantity={ this.decreaseQuantity }

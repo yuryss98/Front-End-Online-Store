@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 
 export default class Cart extends Component {
   render() {
-    const { addItens, increaseQuantity, decreaseQuantity, removeItem } = this.props;
+    const { itensCart, increaseQuantity, decreaseQuantity, removeItem } = this.props;
     return (
       <div>
         {
-          (addItens.length === 0) ? (
+          (itensCart.length === 0) ? (
             <div>
               <input type="text" name="" id="" />
               <p
@@ -16,7 +16,7 @@ export default class Cart extends Component {
                 Seu carrinho está vazio
               </p>
             </div>
-          ) : addItens.map((el) => (
+          ) : itensCart.map((el) => (
             <div key={ el.title }>
               <p data-testid="shopping-cart-product-name">{ el.title }</p>
               <p>{ el.price }</p>
@@ -54,8 +54,8 @@ export default class Cart extends Component {
 }
 
 Cart.propTypes = {
-  addItens: PropTypes.arrayOf.isRequired,
   increaseQuantity: PropTypes.func.isRequired,
   decreaseQuantity: PropTypes.func.isRequired,
   removeItem: PropTypes.func.isRequired,
+  itensCart: PropTypes.arrayOf.isRequired,
 };
