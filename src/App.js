@@ -15,6 +15,15 @@ class App extends Component {
     localStorage.setItem('Cart', JSON.stringify(addItens));
   }
 
+  quantidadeDeProdutos = () => {
+    const { addItens } = this.state;
+    const quantidade = addItens.reduce((acc, curr) => {
+      acc += curr.quantity;
+      return acc;
+    }, 0);
+    return quantidade;
+  }
+
   addItensToCart = (item) => {
     const { price, title } = item;
     const { addItens } = this.state;
@@ -80,6 +89,7 @@ class App extends Component {
               render={ (props) => (<Details
                 { ...props }
                 addItensToCart={ this.addItensToCart }
+                quantidade={ this.quantidadeDeProdutos }
               />) }
             />
             <Route
@@ -88,6 +98,7 @@ class App extends Component {
               render={ (props) => (<Home
                 { ...props }
                 addItensToCart={ this.addItensToCart }
+                quantidade={ this.quantidadeDeProdutos }
               />) }
             />
             <Route

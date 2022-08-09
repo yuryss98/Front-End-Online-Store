@@ -69,11 +69,12 @@ export default class Details extends Component {
   render() {
     const { product, email, comentario, isDisabled, erroMsg } = this.state;
     const { title, thumbnail, price } = product;
-    const { addItensToCart, match: { params: { id } } } = this.props;
+    const { addItensToCart, match: { params: { id } }, quantidade } = this.props;
     const salvos = JSON.parse(localStorage.getItem(id)) || [];
     const arrayIndex = ['1', '2', '3', '4', '5'];
     return (
       <div>
+        <h2 data-testid="shopping-cart-size">{ quantidade() }</h2>
         <Link
           to="/cart"
           data-testid="shopping-cart-button"
@@ -183,4 +184,5 @@ Details.propTypes = {
     }),
   }).isRequired,
   addItensToCart: PropTypes.func.isRequired,
+  quantidade: PropTypes.func.isRequired,
 };

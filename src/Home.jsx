@@ -52,7 +52,7 @@ export default class Home extends Component {
 
   render() {
     const { listCategory, listProducts, test, itemsCategory } = this.state;
-    const { addItensToCart } = this.props;
+    const { addItensToCart, quantidade } = this.props;
     return (
       <div>
         <input
@@ -74,6 +74,7 @@ export default class Home extends Component {
         >
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
+        <h2 data-testid="shopping-cart-size">{ quantidade() }</h2>
         <Link data-testid="shopping-cart-button" to="/cart">Carrinho</Link>
         {
           listCategory && (
@@ -145,4 +146,5 @@ export default class Home extends Component {
 
 Home.propTypes = {
   addItensToCart: PropTypes.func.isRequired,
+  quantidade: PropTypes.func.isRequired,
 };
