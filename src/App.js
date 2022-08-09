@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './Home';
 import Cart from './Cart';
 import Details from './components/Details';
+import Checkout from './components/Checkout';
 
 class App extends Component {
   state = {
@@ -61,6 +62,12 @@ class App extends Component {
     });
   }
 
+  clearCart = () => {
+    this.setState({
+      addItens: '',
+    });
+  }
+
   render() {
     const { addItens } = this.state;
     return (
@@ -94,6 +101,16 @@ class App extends Component {
                 decreaseQuantity={ this.decreaseQuantity }
                 removeItem={ this.removeItem }
               />) }
+            />
+            <Route
+              exact
+              path="/checkout"
+              render={ (props) => (
+                <Checkout
+                  { ...props }
+                  clearCart={ this.clearCart }
+                  itensCart={ addItens }
+                />) }
             />
           </Switch>
         </BrowserRouter>
