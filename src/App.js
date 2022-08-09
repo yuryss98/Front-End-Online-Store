@@ -17,11 +17,13 @@ class App extends Component {
 
   quantidadeDeProdutos = () => {
     const { addItens } = this.state;
-    const quantidade = addItens.reduce((acc, curr) => {
-      acc += curr.quantity;
-      return acc;
-    }, 0);
-    return quantidade;
+    if (addItens) {
+      const quantidade = addItens.reduce((acc, curr) => {
+        acc += curr.quantity;
+        return acc;
+      }, 0);
+      return quantidade;
+    }
   }
 
   addItensToCart = (item) => {
