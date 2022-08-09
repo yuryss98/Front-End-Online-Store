@@ -28,10 +28,9 @@ class App extends Component {
         addItens: [...prevState.addItens, obj],
       }));
     } else {
-      addItens[index].quantity += 1;
-      this.setState({
-        addItens,
-      });
+      const copy = [...addItens];
+      copy[index].quantity += 1;
+      this.setState({ addItens: copy });
     }
   }
 
