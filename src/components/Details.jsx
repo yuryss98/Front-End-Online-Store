@@ -6,6 +6,11 @@ import { getProductById } from '../services/api';
 export default class Details extends Component {
   state = {
     product: {},
+    email: '',
+    comentario: '',
+    notaDoProduto: '',
+    avaliações: [],
+    erroMsg: '',
   }
 
   async componentDidMount() {
@@ -13,13 +18,60 @@ export default class Details extends Component {
     const response = await getProductById(id);
     this.setState({
       product: response,
+      avaliações: JSON.parse(localStorage.getItem(id)) || [],
+    });
+  }
+
+  checarInputs = () => {
+    const { email, notaDoProduto } = this.state;
+    const checado = email.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{3})$/i);
+    if (checado && notaDoProduto) {
+      this.setState({
+        erroMsg: '',
+      });
+      this.salvarAvaliacao();
+    } else {
+      this.setState({
+        erroMsg: 'Campos inválidos',
+      });
+    }
+  }
+
+  handleChange = ({ target }) => {
+    const { name, value } = target;
+    this.setState({
+      [name]: value,
+    });
+  }
+
+  salvarAvaliacao = () => {
+    const { email, comentario, notaDoProduto } = this.state;
+    const { match: { params: { id } } } = this.props;
+    const obj = {
+      email,
+      comentario,
+      notaDoProduto,
+    };
+
+    this.setState((prevState) => ({
+      avaliações: [...prevState.avaliações, obj],
+    }), () => {
+      const { avaliações } = this.state;
+      localStorage.setItem(id, JSON.stringify(avaliações));
+      this.setState({
+        email: '',
+        comentario: '',
+        notaDoProduto: '',
+      });
     });
   }
 
   render() {
-    const { product } = this.state;
+    const { product, email, comentario, isDisabled, erroMsg } = this.state;
     const { title, thumbnail, price } = product;
-    const { addItensToCart } = this.props;
+    const { addItensToCart, match: { params: { id } } } = this.props;
+    const salvos = JSON.parse(localStorage.getItem(id)) || [];
+    const arrayIndex = ['1', '2', '3', '4', '5'];
     return (
       <div>
         <Link
@@ -44,8 +96,79 @@ export default class Details extends Component {
                 Adicionar ao Carrinho
 
               </button>
+
+              <form>
+                <h3>Avaliações</h3>
+                <div>
+                  <h3>Digite seu Email</h3>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    value={ email }
+                    placeholder="Digite seu email"
+                    data-testid="product-detail-email"
+                    onChange={ this.handleChange }
+                  />
+                </div>
+                <div>
+                  <h3>Adicione uma nota ao produto:</h3>
+                  <div>
+                    {arrayIndex.map((el) => (
+                      <label htmlFor={ `nota${Number(el)}` } key={ el }>
+                        <h4>{ el }</h4>
+                        <input
+                          type="radio"
+                          name="notaDoProduto"
+                          value={ Number(el) }
+                          id={ `nota${Number(el)}` }
+                          data-testid={ `${Number(el)}-rating` }
+                          onChange={ this.handleChange }
+                        />
+                      </label>
+                    ))}
+                  </div>
+
+                </div>
+                <div>
+                  <h3>Adicione um comentario ao produto</h3>
+                  <input
+                    type="text"
+                    name="comentario"
+                    id="comentario"
+                    value={ comentario }
+                    required
+                    placeholder="Mensagem(opcional)"
+                    data-testid="product-detail-evaluation"
+                    onChange={ this.handleChange }
+                  />
+                </div>
+                <div>
+                  <h3>Deseja confirmar a avaliação ?</h3>
+                  {erroMsg && <p data-testid="error-msg">Campos inválidos</p>}
+                  <button
+                    data-testid="submit-review-btn"
+                    type="button"
+                    onClick={ this.checarInputs }
+                    disabled={ isDisabled }
+                  >
+                    Avaliar
+
+                  </button>
+                </div>
+              </form>
             </div>
           )
+        }
+
+        {
+          salvos.length > 0 && salvos.map((el, index) => (
+            <div key={ index }>
+              <h4 data-testid="review-card-email">{ el.email }</h4>
+              <h4 data-testid="review-card-rating">{ el.notaDoProduto }</h4>
+              <h4 data-testid="review-card-evaluation">{ el.comentario }</h4>
+            </div>
+          ))
         }
 
       </div>
