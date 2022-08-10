@@ -52,7 +52,7 @@ export default class Home extends Component {
 
   render() {
     const { listCategory, listProducts, test, itemsCategory } = this.state;
-    const { addItensToCart } = this.props;
+    const { addItensToCart, quantidade } = this.props;
     return (
       <div>
         <input
@@ -74,6 +74,7 @@ export default class Home extends Component {
         >
           Digite algum termo de pesquisa ou escolha uma categoria.
         </p>
+        <h2 data-testid="shopping-cart-size">{ quantidade() }</h2>
         <Link data-testid="shopping-cart-button" to="/cart">Carrinho</Link>
         {
           listCategory && (
@@ -101,6 +102,10 @@ export default class Home extends Component {
               <p>{ product.title }</p>
               <img src={ product.thumbnail } alt={ product.title } />
               <p>{ product.price }</p>
+              {
+                product.shipping.free_shipping && (
+                  <h3 data-testid="free-shipping">Frete Grátis</h3>)
+              }
               <Link
                 to={ `/details/${product.id}` }
                 data-testid="product-detail-link"
@@ -119,6 +124,10 @@ export default class Home extends Component {
                 <p>{ item.title }</p>
                 <img src={ item.thumbnail } alt={ item.title } />
                 <p>{ item.price }</p>
+                {
+                  item.shipping.free_shipping && (
+                    <h3 data-testid="free-shipping">Frete Grátis</h3>)
+                }
                 <Link
                   to={ `/details/${item.id}` }
                   data-testid="product-detail-link"
@@ -145,4 +154,5 @@ export default class Home extends Component {
 
 Home.propTypes = {
   addItensToCart: PropTypes.func.isRequired,
+  quantidade: PropTypes.func.isRequired,
 };

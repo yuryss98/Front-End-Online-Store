@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 export default class Cart extends Component {
   render() {
@@ -24,7 +25,7 @@ export default class Cart extends Component {
               <button
                 type="button"
                 data-testid="product-increase-quantity"
-                onClick={ () => increaseQuantity(el) }
+                onClick={ () => increaseQuantity(el, el.estoque) }
               >
                 +
 
@@ -47,6 +48,17 @@ export default class Cart extends Component {
               </button>
             </div>
           ))
+        }
+
+        {
+          itensCart.length > 0 && (
+            <Link
+              data-testid="checkout-products"
+              to="/checkout"
+            >
+              Finalizar Compra
+
+            </Link>)
         }
       </div>
     );

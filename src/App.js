@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Home from './Home';
 import Cart from './Cart';
 import Details from './components/Details';
+import Checkout from './components/Checkout';
 
 class App extends Component {
   state = {
@@ -14,13 +15,26 @@ class App extends Component {
     localStorage.setItem('Cart', JSON.stringify(addItens));
   }
 
+  quantidadeDeProdutos = () => {
+    const { addItens } = this.state;
+    if (addItens) {
+      const quantidade = addItens.reduce((acc, curr) => {
+        acc += curr.quantity;
+        return acc;
+      }, 0);
+      return quantidade;
+    }
+  }
+
   addItensToCart = (item) => {
     const { price, title } = item;
+    const { available_quantity: availableQuantity } = item;
     const { addItens } = this.state;
     const obj = {
       price,
       title,
       quantity: 1,
+      estoque: availableQuantity,
     };
     const index = addItens.findIndex((el) => el.title === title);
     if (index < 0) {
@@ -34,13 +48,15 @@ class App extends Component {
     }
   }
 
-  increaseQuantity = (el) => {
+  increaseQuantity = (el, quantidade) => {
     const { addItens } = this.state;
     const buscar = addItens.findIndex((obj) => obj.title === el.title);
-    addItens[buscar].quantity += 1;
-    this.setState({
-      addItens,
-    });
+    if (addItens[buscar].quantity < quantidade) {
+      addItens[buscar].quantity += 1;
+      this.setState({
+        addItens,
+      });
+    }
   }
 
   decreaseQuantity = (el) => {
@@ -61,6 +77,12 @@ class App extends Component {
     });
   }
 
+  clearCart = () => {
+    this.setState({
+      addItens: '',
+    });
+  }
+
   render() {
     const { addItens } = this.state;
     return (
@@ -73,6 +95,7 @@ class App extends Component {
               render={ (props) => (<Details
                 { ...props }
                 addItensToCart={ this.addItensToCart }
+                quantidade={ this.quantidadeDeProdutos }
               />) }
             />
             <Route
@@ -81,6 +104,7 @@ class App extends Component {
               render={ (props) => (<Home
                 { ...props }
                 addItensToCart={ this.addItensToCart }
+                quantidade={ this.quantidadeDeProdutos }
               />) }
             />
             <Route
@@ -94,6 +118,16 @@ class App extends Component {
                 decreaseQuantity={ this.decreaseQuantity }
                 removeItem={ this.removeItem }
               />) }
+            />
+            <Route
+              exact
+              path="/checkout"
+              render={ (props) => (
+                <Checkout
+                  { ...props }
+                  clearCart={ this.clearCart }
+                  itensCart={ addItens }
+                />) }
             />
           </Switch>
         </BrowserRouter>
