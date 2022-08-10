@@ -28,11 +28,13 @@ class App extends Component {
 
   addItensToCart = (item) => {
     const { price, title } = item;
+    const { available_quantity: availableQuantity } = item;
     const { addItens } = this.state;
     const obj = {
       price,
       title,
       quantity: 1,
+      estoque: availableQuantity,
     };
     const index = addItens.findIndex((el) => el.title === title);
     if (index < 0) {
@@ -46,13 +48,15 @@ class App extends Component {
     }
   }
 
-  increaseQuantity = (el) => {
+  increaseQuantity = (el, quantidade) => {
     const { addItens } = this.state;
     const buscar = addItens.findIndex((obj) => obj.title === el.title);
-    addItens[buscar].quantity += 1;
-    this.setState({
-      addItens,
-    });
+    if (addItens[buscar].quantity < quantidade) {
+      addItens[buscar].quantity += 1;
+      this.setState({
+        addItens,
+      });
+    }
   }
 
   decreaseQuantity = (el) => {

@@ -25,7 +25,7 @@ export default class Cart extends Component {
               <button
                 type="button"
                 data-testid="product-increase-quantity"
-                onClick={ () => increaseQuantity(el) }
+                onClick={ () => increaseQuantity(el, el.estoque) }
               >
                 +
 
