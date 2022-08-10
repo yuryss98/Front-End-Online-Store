@@ -102,6 +102,10 @@ export default class Home extends Component {
               <p>{ product.title }</p>
               <img src={ product.thumbnail } alt={ product.title } />
               <p>{ product.price }</p>
+              {
+                product.shipping.free_shipping && (
+                  <h3 data-testid="free-shipping">Frete Grátis</h3>)
+              }
               <Link
                 to={ `/details/${product.id}` }
                 data-testid="product-detail-link"
@@ -120,6 +124,10 @@ export default class Home extends Component {
                 <p>{ item.title }</p>
                 <img src={ item.thumbnail } alt={ item.title } />
                 <p>{ item.price }</p>
+                {
+                  item.shipping.free_shipping && (
+                    <h3 data-testid="free-shipping">Frete Grátis</h3>)
+                }
                 <Link
                   to={ `/details/${item.id}` }
                   data-testid="product-detail-link"
