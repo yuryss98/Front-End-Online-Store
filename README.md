@@ -1,4 +1,4 @@
-# Boas vindas ao repositório do projeto Solar-sytem!
+# Boas vindas ao repositório do projeto Front-End-Online-Store!
 
 ---
 
