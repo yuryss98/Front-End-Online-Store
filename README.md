@@ -10,8 +10,11 @@ em um cenário próximo ao do mercado de trabalho.
 A partir dessas demandas, teremos uma aplicação em que pessoas usuárias poderão:
 
 Buscar produtos por termos e categorias a partir da API do Mercado Livre;
+
 Interagir com os produtos buscados de modo a adicioná-los e removê-los de um carrinho de compras em diferentes quantidades;
+
 Visualizar detalhes e avaliações prévias de um produto, bem como criar novas avaliações;
+
 Simular a finalização da compra dos itens selecionados;
 
 
